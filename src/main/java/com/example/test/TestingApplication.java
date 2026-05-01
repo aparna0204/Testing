@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TestingApplication {
 
 	public static void main(String[] args) {
-		  System.out.println("Hello World! This is a test7 application.");
+		  System.out.println("Hello World! This is a test8 application.");
 		  
 		  System.out.println("Testing GitHub API integration...");
 		SpringApplication.run(TestingApplication.class, args);
