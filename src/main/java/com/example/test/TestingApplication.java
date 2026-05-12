@@ -9,7 +9,7 @@ public class TestingApplication {
 	public static void main(String[] args) {
 		String s = null;
 		if(s.length() > 0) {
-		  System.out.println("Hello World! This is a test11 application."+ s.length());
+		  System.out.println("Hello World! This is a test12 application."+ s.length());
 		  
 		}
 		  
