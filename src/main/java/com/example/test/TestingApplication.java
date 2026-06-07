@@ -8,7 +8,7 @@ public class TestingApplication {
 
 	public static void main(String[] args) {
 		String s = null;
-		String gitToken = "12345678897234567889998765432131232344";
+		String gitToken = "12345678897234567889998765432131234";
 		
 		
 		if(s.length() > 0) {
