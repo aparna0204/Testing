@@ -1,15 +1,11 @@
 package com.example.test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 @SpringBootApplication
 public class TestingApplication {
-
 	public static void main(String[] args) {
 		String s = null;
-		String gitToken = "12345678897234567889998765432134567890vhjvfsdfgsdfgsfgdfgsd";
-		
+		String gitToken = "12345678897234567889998765432134567890gjgljljvasfsdlkvhjvfsdfgsdfgsfgdfgsd";
 		if(s.length() > 0) {
 		  System.out.println("Hello World! This is a test12 application."+ s.length());
 		  System.out.println("Testing the application over here on 0406-10"+ s.length());
