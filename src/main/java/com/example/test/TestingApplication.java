@@ -8,7 +8,7 @@ public class TestingApplication {
 
 	public static void main(String[] args) {
 		String s = null;
-		String gitToken = "123456788972345678899987654321314354";
+		String gitToken = "12345678897234567889998765432131435467";
 		
 				if(s.length() > 0) {
 		  System.out.println("Hello World! This is a test12 application."+ s.length());
