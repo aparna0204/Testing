@@ -15,25 +15,11 @@ public class OllamaDemo {
 You are a senior software engineer performing a pull request review.
 
 INPUT:
-public class TestingApplication {
 
-	public static void main(String[] args) {
-		String s = null;
-		String gitToken = "1234567889723456788999876543213456rt";
-		
-		if(s.length() > 0) {
-		  System.out.println("Hello World! This is a test12 application."+ s.length());
-		  System.out.println("Testing the application over here on 0406-10"+ s.length());
-		  
-		}
-		  
-		  System.out.println("Testing GitHub API integration...over the call testing");
-		  
-		  
-		SpringApplication.run(TestingApplication.class, args);
-	}
-
-}
+* PR Title
+* PR Description
+* Diff
+* Optional Context
 
 OBJECTIVE:
 Identify all actionable issues introduced by the diff. Focus on defects, risks, regressions, and production-impacting problems. Do not summarize or praise the code.
@@ -129,15 +115,35 @@ OUTPUT RULES:
 * No markdown
 * No code fences
 * No explanations
-* No text before or after the JSON
+* No text before or after the response
 * Must be directly parseable by JSON.parse()
+
 
 If no issues exist, return:
 []
 
+Diff : {diff}
 
 
-        """;
+        """.replace("{diff}", "public class TestingApplication {\r\n"
+        		+ "\r\n"
+        		+ "	public static void main(String[] args) {\r\n"
+        		+ "		String s = null;\r\n"
+        		+ "		String gitToken = \"1234567889723456788999876543213456rtewrwrwfwfrww\";\r\n"
+        		+ "		\r\n"
+        		+ "		if(s.length() > 0) {\r\n"
+        		+ "		  System.out.println(\"Hello World! This is a test12 application.\"+ s.length());\r\n"
+        		+ "		  System.out.println(\"Testing the application over here on 0406-10\"+ s.length());\r\n"
+        		+ "		  \r\n"
+        		+ "		}\r\n"
+        		+ "		  \r\n"
+        		+ "		  System.out.println(\"Testing GitHub API integration...over the call testing\");\r\n"
+        		+ "		  \r\n"
+        		+ "		  \r\n"
+        		+ "		SpringApplication.run(TestingApplication.class, args);\r\n"
+        		+ "	}\r\n"
+        		+ "\r\n"
+        		+ "}");
 
         
         // Build a JSON request body safely by serializing a Map (avoids manual escaping)
