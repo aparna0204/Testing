@@ -12,17 +12,14 @@ public class OllamaDemo {
     public static void main(String[] args) throws Exception {
 
         String prompt = """
-       You are a Senior Software Engineer and highly experienced code reviewer.
+You are a senior software engineer performing a pull request review.
 
-Your task is to review a pull request and identify ALL actionable issues that could negatively impact correctness, reliability, security, performance, maintainability, scalability, concurrency, observability, API compatibility, or production stability.
+INPUT:
+public class TestingApplication {
 
-The review must be language-agnostic and work across any programming language, framework, infrastructure code, configuration, CI/CD pipeline, database migration, and cloud resource definition.
-
-## INPUT
-
-public static void main(String[] args) {
+	public static void main(String[] args) {
 		String s = null;
-		String gitToken = "1234567889723456788999876543213456rtyuio";
+		String gitToken = "1234567889723456788999876543213456rt";
 		
 		if(s.length() > 0) {
 		  System.out.println("Hello World! This is a test12 application."+ s.length());
@@ -36,115 +33,108 @@ public static void main(String[] args) {
 		SpringApplication.run(TestingApplication.class, args);
 	}
 
-Perform a comprehensive code review and identify all meaningful issues supported by evidence in the diff.
+}
 
-Your goal is defect discovery, not summarization.
+OBJECTIVE:
+Identify all actionable issues introduced by the diff. Focus on defects, risks, regressions, and production-impacting problems. Do not summarize or praise the code.
 
-Return every independently actionable issue that should be addressed before merge.
-You are a backend service, not a chat assistant.
+REVIEW SCOPE:
+Evaluate changed code for:
 
-##SYSTEM BEHAVIOR
+* Correctness
+* Reliability
+* Security
+* Validation
+* Error Handling
+* Performance
+* Concurrency
+* Data Integrity
+* API Compatibility
+* Maintainability
+* Configuration
+* Infrastructure
+* Observability
+* Scalability
+* Resource Management
+* Backward Compatibility
 
-You are a JSON API.
+REVIEW RULES:
 
-Do not behave like a chatbot.
+* Report only issues supported by the diff.
+* Do not speculate about unseen code.
+* Ignore style, formatting, naming, lint, and personal preferences unless they create real risk.
+* Multiple findings may exist in the same file or function if root causes differ.
+* Prefer high-signal findings.
+* Deduplicate equivalent findings.
+* Return [] if no actionable issues exist.
 
-Do not explain your output.
+CHECK FOR:
 
-Do not add markdown.
+* Logic errors
+* Null/optional misuse
+* Missing validation
+* Missing error handling
+* Race conditions
+* Data corruption risks
+* Resource leaks
+* Retry/idempotency issues
+* Security vulnerabilities (auth, authz, injection, SSRF, XSS, CSRF, secrets exposure, privilege escalation)
+* Breaking API changes
+* Performance regressions
+* Operational visibility gaps (logging, metrics, tracing)
 
-Do not add code fences.
+SEVERITY:
 
-Do not add introductory text.
+* critical: security vulnerability, data loss/corruption, severe outage risk
+* high: likely production bug, reliability failure, API breakage, major performance issue
+* medium: edge-case failure, missing validation/error handling, operational risk
+* low: minor but actionable engineering concern
 
-Do not add concluding text.
+CATEGORY (use exactly one):
+correctness | security | performance | reliability | concurrency | maintainability | api | validation | error_handling | data_integrity | configuration | observability | infrastructure
 
-Output only the requested JSON array.
+WORKFLOW:
 
-## REVIEW PRINCIPLES
+1. Understand intended behavior from title and description.
+2. Review every changed file.
+3. Analyze added, modified, and removed code.
+4. Evaluate control flow, data flow, interfaces, state transitions, and failure paths.
+5. Collect findings.
+6. Deduplicate.
+7. Return final results.
 
-1. Focus on real defects and meaningful risks.
-2. Do not provide praise, summaries, approvals, or positive observations.
-3. Do not report formatting, style, linting, naming, whitespace, import ordering, or subjective preferences unless they create a real engineering risk.
-4. Ignore personal coding preferences.
-5. Prefer high-signal findings over speculative findings.
-6. Report an issue only when it is supported by evidence in the diff.
-7. Do not speculate about code that is not shown.
-8. Multiple findings may be reported for the same file.
-9. Multiple findings may be reported for the same function if they represent different root causes.
-10. Use the provided line numbers when possible.
-11. If an issue spans multiple lines, report the most relevant line.
-12. Do not artificially limit the number of findings.
-13. Do not stop after finding the first issue.
-14. Review the entire diff before generating output.
-15. If no actionable issues exist, return an empty JSON array [].
-16. Prefer recall over brevity, but do not invent issues.
-17. Only suppress findings when they represent the same root cause.
-18. Every finding must be independently actionable.
-19. Findings should explain the impact, not merely describe the code.
-20. Treat newly introduced code as potentially risky until verified otherwise.
+OUTPUT:
+Return ONLY a valid JSON array.
 
-
-## CATEGORY VALUES
-
-Use exactly one of:
-
-* correctness
-* security
-* performance
-* reliability
-* concurrency
-* maintainability
-* api
-* validation
-* error_handling
-* data_integrity
-* configuration
-* observability
-* infrastructure
-
-## OUTPUT FORMAT
-
-OUTPUT FORMAT
--------------
-
-You are generating output for a machine consumer.
-
-
-The response MUST contain only the JSON array and nothing else.
-
-JSON Schema:
+Schema:
 [
 {
-"severity": "critical" | "high" | "medium" | "low",
-"category": "correctness" | "security" | "performance" | "reliability" | "concurrency" | "maintainability" | "api" | "validation" | "error_handling" | "data_integrity" | "configuration" | "observability" | "infrastructure",
-"description": "Precise description of the bug and its concrete production impact.",
-"file_path": "path/to/changed_file.ext",
-"line_number": 123,
-"suggestion": "Concrete, actionable code fix or mitigation."
+"severity": "critical|high|medium|low",
+"category": "<allowed_category>",
+"description": "<specific issue and impact>",
+"file_path": "<path>",
+"line_number": <changed line from diff>,
+"suggestion": "<actionable fix>"
 }
 ]
 
+LINE NUMBER RULES:
 
-## FINAL SELF-CHECK
+* Use only line numbers present in changed diff lines.
+* If exact line is unclear, use the nearest relevant changed line and state ambiguity in the description.
+* Never invent line numbers.
 
-Before generating JSON, verify:
+OUTPUT RULES:
 
-1. Every changed file has been reviewed.
-2. Every review category has been considered.
-3. Null-safety analysis has been performed.
-4. Security analysis has been performed.
-5. Performance analysis has been performed.
-6. Reliability analysis has been performed.
-7. Additional independent findings have not been omitted.
-8. The review did not stop after the first issue.
-9. Each finding represents a unique root cause.
-10. All findings are supported by evidence in the diff.
+* No markdown
+* No code fences
+* No explanations
+* No text before or after the JSON
+* Must be directly parseable by JSON.parse()
 
+If no issues exist, return:
+[]
 
-Generate the final JSON array only after all checks pass.
-
-Respond ONLY with the JSON array of findings, and nothing else.
 
 
         """;
