@@ -116,8 +116,8 @@ OUTPUT RULES:
 * No code fences
 * No explanations
 * No text before or after the response
+* Return only the JSON array, starting with [ and ending with ].
 * Must be directly parseable by JSON.parse()
-
 
 If no issues exist, return:
 []
