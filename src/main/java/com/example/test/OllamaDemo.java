@@ -122,28 +122,37 @@ OUTPUT RULES:
 If no issues exist, return:
 []
 
-Diff : {diff}
+Diff : diff --git a/src/main/java/com/example/test/OllamaDemo.java b/src/main/java/com/example/test/OllamaDemo.java
+index ea64577..0962d32 100644
+--- a/src/main/java/com/example/test/OllamaDemo.java
++++ b/src/main/java/com/example/test/OllamaDemo.java
+@@ -116,9 +116,9 @@ public static void main(String[] args) throws Exception {
+ * No code fences
+ * No explanations
+ * No text before or after the response
++* Return only the JSON array, starting with [ and ending with ].
+ * Must be directly parseable by JSON.parse()
+ 
+-
+ If no issues exist, return:
+ []
+ 
+diff --git a/src/main/java/com/example/test/TestingApplication.java b/src/main/java/com/example/test/TestingApplication.java
+index 77b2ed7..39029ce 100644
+--- a/src/main/java/com/example/test/TestingApplication.java
++++ b/src/main/java/com/example/test/TestingApplication.java
+@@ -8,7 +8,7 @@ public class TestingApplication {
+ 
+ 	public static void main(String[] args) {
+ 		String s = null;
+-		String gitToken = "1234567889723456788999876543213456rtewrwf";
++		String gitToken = "1234567889723456788999876543213456rtew";
+ 		
+ 		if(s.length() > 0) {
+ 		  System.out.println("Hello World! This is a test12 application."+ s.length());
 
 
-        """.replace("{diff}", "public class TestingApplication {\r\n"
-        		+ "\r\n"
-        		+ "	public static void main(String[] args) {\r\n"
-        		+ "		String s = null;\r\n"
-        		+ "		String gitToken = \"1234567889723456788999876543213456rtewrwrwfwfrww\";\r\n"
-        		+ "		\r\n"
-        		+ "		if(s.length() > 0) {\r\n"
-        		+ "		  System.out.println(\"Hello World! This is a test12 application.\"+ s.length());\r\n"
-        		+ "		  System.out.println(\"Testing the application over here on 0406-10\"+ s.length());\r\n"
-        		+ "		  \r\n"
-        		+ "		}\r\n"
-        		+ "		  \r\n"
-        		+ "		  System.out.println(\"Testing GitHub API integration...over the call testing\");\r\n"
-        		+ "		  \r\n"
-        		+ "		  \r\n"
-        		+ "		SpringApplication.run(TestingApplication.class, args);\r\n"
-        		+ "	}\r\n"
-        		+ "\r\n"
-        		+ "}");
+        """;
 
         
         // Build a JSON request body safely by serializing a Map (avoids manual escaping)
