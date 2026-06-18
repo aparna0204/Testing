@@ -52,44 +52,37 @@ public class MarkdownTableGenerator {
 			
 			String jsonArrayWithSeverity = """
 					{
-					  "testCoverageReport": {
-					    "linesCovered": 0,
-					    "totalLinesAddedOrModified": 2,
-					    "coveragePercentage": 0.0,
-					    "status": "FAILED",
-					    "summary": "The changes introduce critical runtime exceptions and security vulnerabilities without any accompanying test coverage."
-					  },
-					  "issuesIdentified": [
-					    {
-					      "severity": "critical",
-					      "category": "security",
-					      "description": "A hardcoded string value is directly assigned to a variable named 'password'.",
-					      "file_path": "src/main/java/com/example/test/TestingApplication.java",
-					      "line_number": 7,
-					      "evidence": "String password = '12345678897234569843278687134546789687685gjhfsgjvnvn';",
-					      "suggestion": "Remove hardcoded passwords."
-					    },
-					    {
-					      "severity": "high",
-					      "category": "reliability",
-					      "description": "The variable 's' is explicitly initialized to null on line 6.",
-					      "file_path": "src/main/java/com/example/test/TestingApplication.java",
-					      "line_number": 8,
-					      "evidence": "if( s.length() > 0) {",
-					      "suggestion": "Implement a null-check."
-					    }
-					  ]
-					}
+  "testCoverageReport": {
+    "linesCovered": 0,
+    "totalLinesAddedOrModified": 1,
+    "coveragePercentage": 0.0,
+    "status": "FAILED",
+    "summary": "The single modified line introduces a hardcoded string for a sensitive variable ('password') and lacks any accompanying unit tests to validate its change or usage. This results in 0% coverage for the introduced/modified code, which is a significant coverage gap for a security-related change."
+  },
+  "issuesIdentified": [
+    {
+      "severity": "critical",
+      "category": "security",
+      "description": "Hardcoded string assigned to a variable named 'password'. This is a severe security vulnerability as it could lead to exposure of sensitive credentials or patterns used for generating them. Even if this is test data, it sets a dangerous precedent and violates security best practices for handling sensitive information.",
+      "file_path": "src/main/java/com/example/test/TestingApplication.java",
+      "line_number": 8,
+      "evidence": "String password = \"12345678897234ghjg9843278687134546789687685gjhfsgjvnvn\";",
+      "suggestion": "Remove hardcoded password. Implement a secure mechanism for handling credentials, such as environment variables, a secrets management service (e.g., AWS Secrets Manager, HashiCorp Vault), or a secure configuration file. If this is placeholder test data, it should be clearly documented and/or replaced with non-sensitive mock data or a testing secret management approach."
+    }
+  ]
+}
 					""";
 			
 			
-	            ObjectMapper objectMapper = new ObjectMapper();
+			// 1. CLEAN THE STRING: Fix the unescaped inner quotes in the "evidence" line
+            // This replaces patterns like = "text"; with = 'text'; so Jackson doesn't crash
+            String cleanedJson = jsonArrayWithSeverity.replaceAll("=\\s*\"([^\"]+)\"\\s*;", "= '$1';");
 
-	            // 1. Parse JSON string into a generic JsonNode tree
-	            JsonNode rootNode = objectMapper.readTree(jsonArrayWithSeverity);
+            ObjectMapper objectMapper = new ObjectMapper();
 
-	            // 2. Target the specific "issuesIdentified" node path
-	            JsonNode issuesNode = rootNode.path("issuesIdentified");
+            // 2. Parse the safely cleaned JSON string into a tree node
+            JsonNode rootNode = objectMapper.readTree(cleanedJson);
+            JsonNode issuesNode = rootNode.path("issuesIdentified");
 			System.out.println( findSeverityfromJSonArray(issuesNode.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();

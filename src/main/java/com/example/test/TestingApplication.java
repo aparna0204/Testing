@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TestingApplication {
 	public static void main(String[] args) {
 		String s = null;
-		String password = "12345678897234ghjg9843278687134546789687685gjhfsgjvnvn";
+		String password = "12345678897234gh9843278687134546789687685gjhfsgjvnvn";
 		if( s.length() > 0) {
 		  System.out.println("Hello World! This is a test12 application."+ s.length());
 		  System.out.println("Testing the application over here on 0406-10"+ s.length());
