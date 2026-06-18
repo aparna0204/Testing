@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OrderProcessingService {
-
+public class OrderProcessingService1 {
    
     // ISSUE 2: Concurrency Bug - Non-thread-safe HashMap used to track global mutable state in a service
     private final Map<String, Double> globalOrderCache = new HashMap<>();
