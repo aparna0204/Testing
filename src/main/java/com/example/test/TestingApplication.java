@@ -4,10 +4,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TestingApplication {
 	public static void main(String[] args) {
-		// Removed null reference to prevent NullPointerException
-		String s = "test";
+		String s = null;
 		String password = "1234567889723456788999876543278687134546789687685gjhfsgjvnvn";
-		if(s != null && s.length() > 0) {
+		if( s.length() > 0) {
 		  System.out.println("Hello World! This is a test12 application."+ s.length());
 		  System.out.println("Testing the application over here on 0406-10"+ s.length());
 		  
