@@ -10,13 +10,13 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OrderProcessingServiceTest {
+public class OrderProcessingService1Test {
 
-    private OrderProcessingService orderProcessingService;
+    private OrderProcessingService1 orderProcessingService;
 
     @BeforeEach
     public void setUp() {
-        orderProcessingService = new OrderProcessingService();
+        orderProcessingService = new OrderProcessingService1();
     }
 
     @Test
